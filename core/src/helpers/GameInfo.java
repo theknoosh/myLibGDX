@@ -1,7 +1,7 @@
 package helpers;
 
 /**
- * Created by darrellpayne on 7/30/17.
+ * Created by Darrell Payne on 7/30/17.
  */
 
 public class GameInfo {
