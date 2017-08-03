@@ -1,4 +1,4 @@
-package player;
+package clouds;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -12,25 +12,25 @@ import com.badlogic.gdx.physics.box2d.World;
 import helpers.GameInfo;
 
 /**
- * Created by Darrell Payne on 7/31/17.
+ * Created by Darrell Payne on 8/1/17.
  */
 
-public class Player extends Sprite {
+public class Cloud extends Sprite{
 
     private World world;
     private Body body;
 
-    public Player(World world, java.lang.String name, float x, float y){
-        super(new Texture(name));
+    public Cloud(World world){
+        super((new Texture("Cloud 1.png")));
         this.world = world;
-        setPosition(x - getWidth()/2,y - getHeight()/2 + 200);
+        setPosition((GameInfo.WIDTH / 2f) - 40f, GameInfo.HEIGHT / 2f - 130);
         createBody();
     }
 
     void createBody(){
 
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.type = BodyDef.BodyType.StaticBody;
         // StaticBody is not affected by gravity or outside forces
         // KinimaticBody is not affected by gravity but IS affected by outside forces
         // DynamicBody is affected by gravity AND outside forces
@@ -38,22 +38,16 @@ public class Player extends Sprite {
         bodyDef.position.set(getX() / GameInfo.PPM, getY() / GameInfo.PPM);
         body = world.createBody(bodyDef);
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox((getWidth()/2) / GameInfo.PPM, (getHeight()/2) / GameInfo.PPM);
+        shape.setAsBox((getWidth() / 2) / GameInfo.PPM, (getHeight()/2) / GameInfo.PPM);
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 1;
 
         Fixture fixture = body.createFixture(fixtureDef);
-        fixture.setUserData("Player");
+        fixture.setUserData("Cloud");
+        fixture.setSensor(true); // If setSensor is true, collision is detected, but object passes through it
 
         shape.dispose();
     }
 
-    public void  updatePlayer(){
-        this.setPosition(body.getPosition().x * GameInfo.PPM, body.getPosition().y * GameInfo.PPM);
-    }
-
-    public Body getBody(){
-        return this.body;
-    }
 }
